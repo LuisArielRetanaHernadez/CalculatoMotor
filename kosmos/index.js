@@ -107,12 +107,13 @@ const calculoMotor = (tipoNomina, fechaPrimerEmpleo, genero) => {
   const fechaSerializada = new Date(`${año}-${mes}-${dia}`);
   const fechaActual = new Date();
   const diffEnMeses = (fechaActual.getFullYear() - fechaSerializada.getFullYear()) * 12 + (fechaActual.getMonth() - fechaSerializada.getMonth());
+  const tipoNominaSerializado = tipoNomina.toLowerCase();
   // encontrar el monto minimo con el tipo de nomina, la fecga del primer empleo en meses y el genero
   const montoMinimo = tblGeneral[genero].tbMontoMinimo.find(item => {
     for (const key in item) {
       if (item.hasOwnProperty(key)) {
         const rangoEdad = item[key].rangoEdad;
-        if (diffEnMeses >= rangoEdad[0] && diffEnMeses <= rangoEdad[1] && key.toUpperCase() === tipoNomina.toUpperCase()) {
+        if (diffEnMeses >= rangoEdad[0] && diffEnMeses <= rangoEdad[1] && key.toLowerCase() === tipoNominaSerializado) {
           return item;
         }
       }
@@ -123,22 +124,22 @@ const calculoMotor = (tipoNomina, fechaPrimerEmpleo, genero) => {
     for (const key in item) {
       if (item.hasOwnProperty(key)) {
         const rangoEdad = item[key].rangoEdad;
-        if (diffEnMeses >= rangoEdad[0] && diffEnMeses <= rangoEdad[1] && key.toUpperCase() === tipoNomina.toUpperCase()) {
+        if (diffEnMeses >= rangoEdad[0] && diffEnMeses <= rangoEdad[1] && key.toLowerCase() === tipoNominaSerializado) {
           return item;
         }
       }
     }
   });
 
-  const p1 = montoMinimo[tipoNomina].monto + Math.sqrt(montoMaximo[tipoNomina].monto - montoMinimo[tipoNomina].monto);
-  const p2 = montoMinimo[tipoNomina].monto + 0.0175 * (montoMaximo[tipoNomina].monto - montoMinimo[tipoNomina].monto);
+  const p1 = montoMinimo[tipoNominaSerializado].monto + Math.sqrt(montoMaximo[tipoNominaSerializado].monto - montoMinimo[tipoNominaSerializado].monto);
+  const p2 = montoMinimo[tipoNominaSerializado].monto + 0.0175 * (montoMaximo[tipoNominaSerializado].monto - montoMinimo[tipoNominaSerializado].monto);
 
   return {
-    montoMinimo: montoMinimo[tipoNomina].monto,
-    montoMaximo: montoMaximo[tipoNomina].monto,
+    montoMinimo: montoMinimo[tipoNominaSerializado].monto,
+    montoMaximo: montoMaximo[tipoNominaSerializado].monto,
     p1,
     p2
   }
 }
 
-console.log(calculoMotor("a", new Date("2022-12-06"), "f"))
+console.log(calculoMotor("D", new Date("2019/01/15"), "m"))
